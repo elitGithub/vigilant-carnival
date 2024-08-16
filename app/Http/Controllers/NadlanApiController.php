@@ -37,7 +37,7 @@ class NadlanApiController extends Controller
             }
         } catch (\Exception $e) {
             Log::error("Error in GetApiDataByQuery: " . $e->getMessage());
-            return response()->json(['error' => 'Server error'], 500);
+            return response()->json(['error' => $e->getMessage(), 'trace' => $e->getTrace()], 500);
         }
     }
 
