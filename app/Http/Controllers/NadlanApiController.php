@@ -8,24 +8,8 @@ use Illuminate\Support\Facades\Log;
 
 class NadlanApiController extends Controller
 {
-    public function getApiNadlanAddressFromNadlan(Request $request)
-    {
-        $address = trim($request->input('adresse'));
-        $address = urlencode($address);
 
-        $url = "https://www.nehassim.com/pages/getshunabynadlan?adresse=" . $address;
-        $userAgent = "Mozilla/5.0 (Linux; Android 9; BLA-L29 Build/HUAWEIBLA-L29S; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/75.0.3770.101 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/228.0.0.41.124;]";
-
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json'
-        ])->withUserAgent($userAgent)
-                        ->timeout(30)
-                        ->get($url);
-
-        return $response->body();
-    }
-
-    public function apiGetAssetsAndDeals(Request $request)
+    public function apiGetAssetsAndDeals(Request $request): \Illuminate\Http\JsonResponse
     {
         $count = $request->input('count');
         $result = $request->input('result');
