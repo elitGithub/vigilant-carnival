@@ -8,6 +8,8 @@ Route::get('/', function () {
 });
 
 Route::get('/cache-clear', function () {
+    Artisan::call('make:cache-table');
+    Artisan::call('migrate');
     Artisan::call('config:cache');
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
