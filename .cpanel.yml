@@ -1,4 +1,3 @@
----
 deployment:
   tasks:
     - export DEPLOYPATH=/home/elicpane/public_html
