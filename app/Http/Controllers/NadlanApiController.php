@@ -18,6 +18,8 @@ class NadlanApiController extends Controller
     public function apiGetDataByQuery(Request $request): JsonResponse | string
     {
         $url = $request->input('url');  // Assuming URL is passed as a query parameter
+        $url = urlencode($request->input('url'));
+
         Log::info("GetApiDataByQuery: $url");
 
         try {
