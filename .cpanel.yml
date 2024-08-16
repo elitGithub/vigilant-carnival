@@ -4,6 +4,7 @@ deployment:
     - export DEPLOYPATH=/home/elicpane/public_html/
     - /bin/cp -R . $DEPLOYPATH
     - cd $DEPLOYPATH
+    - npm i
     - /usr/local/bin/php /opt/cpanel/composer/bin/composer du
     - /usr/local/bin/php /opt/cpanel/composer/bin/composer update --no-interaction
     - /usr/local/bin/php /opt/cpanel/ea-nodejs10/bin/npm install
