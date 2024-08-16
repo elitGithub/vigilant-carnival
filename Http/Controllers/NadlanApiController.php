@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -9,31 +10,35 @@ use Illuminate\Support\Facades\Log;
 class NadlanApiController extends Controller
 {
 
-    public function apiGetAssetsAndDeals(Request $request): \Illuminate\Http\JsonResponse
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\JsonResponse|string
+     */
+    public function apiGetDataByQuery(Request $request): JsonResponse | string
     {
-        $count = $request->input('count');
-        $result = $request->input('result');
-        $city = $request->input('city');
-        $shuna = addslashes(str_replace('"', '', $request->input('shuna')));
-        $searchId = $request->input('searchId');
+        $url = $request->input('url');  // Assuming URL is passed as a query parameter
+        Log::info("GetApiDataByQuery: $url");
 
-        $resulttemp = str_replace('"PageNo":0', '"PageNo":' . $count, $result);
+        try {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json'
+            ])->withUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+                            ->timeout(30)
+                            ->withoutVerifying()  // Disables SSL certificate verification
+                            ->get($url);
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'cache-control' => 'no-cache'
-        ])->post('https://www.nadlan.gov.il/Nadlan.REST/Main/GetAssestAndDeals?=', $resulttemp);
-
-        Log::info($response->body());
-
-        $res = json_decode($response->body());
-
-        if (count($res->AllResults) == 0) {
-            Log::error('No results found for city: ' . $city . ' and shuna: ' . $shuna);
-            return response()->json(['error' => 'No results found'], 404);
+            if ($response->successful()) {
+                Log::info("GetApiDataByQuery Result: " . $response->body());
+                return $response->body();
+            } else {
+                Log::error("Failed to retrieve data from: $url");
+                return response()->json(['error' => 'Failed to retrieve data'], 400);
+            }
+        } catch (\Exception $e) {
+            Log::error("Error in GetApiDataByQuery: " . $e->getMessage());
+            return response()->json(['error' => 'Server error'], 500);
         }
-
-        // Further processing...
-        return response()->json($res);
     }
+
 }
