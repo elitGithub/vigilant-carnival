@@ -75,7 +75,7 @@ class NadlanApiController extends Controller
         } else {
             // Log and handle errors
             Log::error("Failed to retrieve data from API for city: {$city}, shuna: {$shuna}");
-            return response()->json(['error' => 'Failed to retrieve data from the API', 'response' => $response], 400);
+            return response()->json(['error' => 'Failed to retrieve data from the API', 'response' => $response, 'resulttemp' => $resulttemp, ], 400);
         }
     }
 
