@@ -17,3 +17,11 @@ Route::get('/cache-clear', function () {
     return view('welcome');
 });
 
+Route::get('/install_api', function () {
+    Artisan::call('install:api');
+    Artisan::call('config:cache');
+    Artisan::call('route:clear');
+    Artisan::call('route:cache');
+    return view('welcome');
+});
+
