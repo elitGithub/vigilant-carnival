@@ -8,9 +8,9 @@ Route::get('/', function () {
 });
 
 Route::get('/cache-clear', function () {
-    Artisan::call('cache:clear');
     Artisan::call('make:cache-table');
     Artisan::call('migrate');
+    Artisan::call('cache:clear');
     Artisan::call('config:cache');
     Artisan::call('route:clear');
     Artisan::call('route:cache');
