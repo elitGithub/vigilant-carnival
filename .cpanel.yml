@@ -4,4 +4,3 @@ deployment:
     - export DEPLOYPATH=/home/elicpane/public_html/
     - /bin/cp -R . $DEPLOYPATH
     - cd $DEPLOYPATH
-    - /usr/bin/npm install  # Adjust this path based on where npm is installed
