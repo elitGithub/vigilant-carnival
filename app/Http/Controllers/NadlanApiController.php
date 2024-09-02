@@ -66,8 +66,8 @@ class NadlanApiController extends Controller
             'cache-control' => 'no-cache',
         ])->withOptions([
             'verify' => false,
-        ])->body($resulttemp)
-                        ->post('https://www.nadlan.gov.il/Nadlan.REST/Main/GetAssestAndDeals?=');
+        ])->withBody($resulttemp, 'application/json')
+                        ->post('https://www.nadlan.gov.il/Nadlan.REST/Main/GetAssestAndDeals');
 
         // Check if the request was successful
         if ($response->successful()) {
@@ -79,6 +79,4 @@ class NadlanApiController extends Controller
             return response()->json(['error' => "Failed to retrieve data from API for city: $city, shuna: $shuna", 'response' => $response->body(), 'resulttemp' => $resulttemp], 400);
         }
     }
-
-
 }
